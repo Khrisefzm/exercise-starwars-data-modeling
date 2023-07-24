@@ -7,12 +7,26 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = 'user'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    user_id = Column(String(250), nullable=False, primary_key=True)
+    name = Column(String(250), nullable=False)
+    favorite_name = Column(Integer, ForeignKey('favorite.name'))
+
+
 class Favorite(Base):
     __tablename__ = 'favorite'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+    name = Column(String(250), nullable=False, primary_key=True)
+    user_id= Column(String(250), ForeignKey('User'))
+    people_id = Column(Integer, ForeignKey('people.people_id'))
+    vehicle_id = Column(Integer, ForeignKey('vehicles.vehicle_id'))
+    planet_id = Column(Integer, ForeignKey('planets.planet_id'))
+    user = relationship(User)
+
 
 class People(Base):
     __tablename__ = 'people'
@@ -27,7 +41,6 @@ class People(Base):
     eye_color = Column(String(80))
     birth_year = Column(String(80))
     gender = Column(String(80))
-    id = Column(Integer, ForeignKey('favorite.id'))
     favorite = relationship(Favorite)
 
 
@@ -46,7 +59,6 @@ class Vehicles(Base):
     passengers = Column(Integer)
     cargo_capacity = Column(Integer)
     consumables = Column(String)
-    id = Column(Integer, ForeignKey('favorite.id'))
     favorite = relationship(Favorite)
 
 class Planets(Base):
@@ -63,7 +75,6 @@ class Planets(Base):
     terrain = Column(String(80))
     surface_water = Column(String)
     population = Column(Integer)
-    id = Column(Integer, ForeignKey('favorite.id'))
     favorite = relationship(Favorite)
 
     def to_dict(self):
