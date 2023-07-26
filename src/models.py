@@ -13,7 +13,6 @@ class User(Base):
     # Notice that each column is also a normal Python instance attribute.
     user_id = Column(String(250), nullable=False, primary_key=True)
     name = Column(String(250), nullable=False)
-    favorite_name = Column(Integer, ForeignKey('favorite.name'))
 
 
 class Favorite(Base):
