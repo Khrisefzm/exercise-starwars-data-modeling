@@ -11,8 +11,9 @@ class User(Base):
     __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    user_id = Column(String(250), nullable=False, primary_key=True)
+    user_id = Column(Integer, nullable=False, primary_key=True)
     name = Column(String(250), nullable=False)
+    favorite = relationship('Favorite')
 
 
 class Favorite(Base):
@@ -20,11 +21,10 @@ class Favorite(Base):
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     name = Column(String(250), nullable=False, primary_key=True)
-    user_id= Column(String(250), ForeignKey('User'))
+    user_id= Column(Integer, ForeignKey('user.user_id'))
     people_id = Column(Integer, ForeignKey('people.people_id'))
     vehicle_id = Column(Integer, ForeignKey('vehicles.vehicle_id'))
     planet_id = Column(Integer, ForeignKey('planets.planet_id'))
-    user = relationship(User)
 
 
 class People(Base):
